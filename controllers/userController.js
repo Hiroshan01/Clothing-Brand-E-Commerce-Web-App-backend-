@@ -91,16 +91,43 @@ export function userLogin(req, res) {
 }
 
 //get user
-export async function getUser(req, res) {
+export async function getUserProfile(req, res) {
     try {
-        const users = await User.find();
-        res.status(200).json(users);
-    } catch {
-        res.status(500).json(
-            {
-                message: "User Not Found",
+        // Token එකෙන් user details check කරන්න
+        if (!req.user) {
+            return res.status(401).json({
+                message: "Unauthorized. Please login."
+            })
+        }
+
+        // Token එකේ තියෙන email එකෙන් හෝ id එකෙන් user එක හොයන්න
+        const user = await User.findOne({
+            email: req.user.email
+        }).select('-password'); // password එක exclude කරන්න
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            })
+        }
+
+        // Single user object එක return කරන්න
+        res.status(200).json({
+            user: {
+                _id: user._id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                role: user.role,
+                img: user.img,
+                isBlock: user.isBlock
             }
-        );
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Server error",
+            error: error.message
+        });
     }
 }
 
