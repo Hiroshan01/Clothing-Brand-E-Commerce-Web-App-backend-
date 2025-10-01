@@ -84,3 +84,16 @@ export async function getProduct(req, res) {
         product,
     })
 }
+
+// Get Products for User (only available products)
+export async function getUserProducts(req, res) {
+    try {
+        const products = await Product.find({ isAvailable: true });
+        res.json(products);
+    } catch (err) {
+        res.status(500).json({
+            message: "Failed to get products",
+            error: err
+        });
+    }
+}
