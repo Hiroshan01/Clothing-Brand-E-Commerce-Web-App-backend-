@@ -41,7 +41,6 @@ export async function searchProducts(req, res) {
                 message: "Search query is required"
             });
         }
-
         const products = await Product.find({
             $and: [
                 { isAvailable: true },
@@ -54,7 +53,7 @@ export async function searchProducts(req, res) {
             ]
         });
 
-        res.json(products);
+        res.status(200).json(products);
     } catch (err) {
         console.error('Search error:', err);
         res.status(500).json({
@@ -93,6 +92,33 @@ export async function getUserProducts(req, res) {
     } catch (err) {
         res.status(500).json({
             message: "Failed to get products",
+            error: err
+        });
+    }
+}
+
+//get product by ID 
+export async function getProductById(req, res) {
+    const productId = req.params.productId;
+    try {
+        const product = await Product.findOne({ productId: productId });
+
+        if (!product) {
+            return res.status(404).json({
+                message: "Product not found"
+            });
+        }
+
+        if (product.isAvailable) {
+            res.json(product);
+        } else {
+            res.status(404).json({
+                message: "Product not found or not available"
+            });
+        }
+    } catch (err) {
+        res.status(500).json({
+            message: "Failed to get product",
             error: err
         });
     }

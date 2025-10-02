@@ -5,6 +5,7 @@ import cors from "cors"
 import dotenv from "dotenv";
 import userRoute from './routes/userRoute.js';
 import productRoute from './routes/productRoute.js';
+import orderRoute from './routes/orderRoute.js';
 
 dotenv.config()
 
@@ -47,6 +48,7 @@ app.use(
 //Routers
 app.use("/api/users", userRoute)
 app.use("/api/products", productRoute)
+app.use("/api/orders", orderRoute)
 
 app.listen(5000, () => {
     console.log("Server is running on 5000")
