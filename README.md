@@ -21,7 +21,7 @@ Password Hashing: bcryptjs
 
 # Installation & Setup
 1. Repository clone
-bashgit clone https://github.com/your-username/ecommerce-app.git
+bashgit clone [https://github.com/your-username/ecommerce-app.git](https://github.com/Hiroshan01/Clothing-Brand-E-Commerce-Web-App-backend-.git)
 cd ecommerce-app
 
 # Dependencies install
