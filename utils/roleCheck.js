@@ -1,10 +1,10 @@
 // admin check function
 export function isAdmin(req) {
     if (req.user == null) {
-        return false; // No user is logged in
+        return false;
     }
     if (req.user.role !== "admin") {
-        return false; // User is not an admin
+        return false;
     }
-    return true; // User is an admin
+    return true;
 }

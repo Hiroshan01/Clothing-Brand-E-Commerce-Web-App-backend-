@@ -61,7 +61,7 @@ export function userLogin(req, res) {
                     message: "User not found"
                 })
             } else {
-                const isPasswordCorrect = bcrypt.compareSync(password, user.password) //compare
+                const isPasswordCorrect = bcrypt.compareSync(password, user.password) //compare pass
                 if (isPasswordCorrect) {
                     // Generate encrypt
                     const token = jwt.sign(
@@ -93,17 +93,14 @@ export function userLogin(req, res) {
 //get user
 export async function getUserProfile(req, res) {
     try {
-        // Token එකෙන් user details check කරන්න
         if (!req.user) {
             return res.status(401).json({
                 message: "Unauthorized. Please login."
             })
         }
-
-        // Token එකේ තියෙන email එකෙන් හෝ id එකෙන් user එක හොයන්න
         const user = await User.findOne({
             email: req.user.email
-        }).select('-password'); // password එක exclude කරන්න
+        }).select('-password');
 
         if (!user) {
             return res.status(404).json({
@@ -111,7 +108,6 @@ export async function getUserProfile(req, res) {
             })
         }
 
-        // Single user object එක return කරන්න
         res.status(200).json({
             user: {
                 _id: user._id,

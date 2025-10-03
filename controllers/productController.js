@@ -62,27 +62,41 @@ export async function searchProducts(req, res) {
         });
     }
 }
-
-
+//Filter
 export async function getProduct(req, res) {
+    try {
+        const resPerPage = Number(req.query.limit) || 4;
+        const totalProducts = await Product.countDocuments();
+        const apiFilters = new APIFilters(Product.find(), req.query);
 
-    const resPerPage = 4
-    const apiFilters = new APIFilters(Product, req.query).search().filters();
+        apiFilters.filters();
 
-    let product = await apiFilters.query;
-    let filterProductCount = product.length
+        const filteredQuery = apiFilters.query.clone();
+        const filterProductCount = await filteredQuery.countDocuments();
 
-    // return next (new ErrorHandler("Hello",400))
+        apiFilters.pagination(resPerPage);
 
-    apiFilters.pagination(resPerPage)
-    product = await apiFilters.query.clone()
+        const products = await apiFilters.query;
+        res.status(200).json({
+            success: true,
+            resPerPage,
+            filterProductCount,
+            totalProducts,
+            currentPage: Number(req.query.page) || 1,
+            totalPages: Math.ceil(filterProductCount / resPerPage),
+            products,
+        });
 
-    res.status(200).json({
-        resPerPage,
-        filterProductCount,
-        product,
-    })
+    } catch (error) {
+        console.error("Error in getProduct:", error);
+        res.status(500).json({
+            success: false,
+            message: "Products load කරන්න බැහැ",
+            error: error.message
+        });
+    }
 }
+
 
 // Get Products for User (only available products)
 export async function getUserProducts(req, res) {
