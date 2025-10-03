@@ -123,7 +123,7 @@ export default function generateOrderEmailHTML(orderData) {
                             <tr>
                                 <td style="background-color: #f5f5f5; padding: 20px; text-align: center; color: #666; font-size: 12px;">
                                     <p style="margin: 0;">Thank you for shopping with us!</p>
-                                    <p style="margin: 10px 0 0 0;">&copy; ${new Date().getFullYear()} Your Store. All rights reserved.</p>
+                                    <p style="margin: 10px 0 0 0;">&copy; ${new Date().getFullYear()}  ZIARA FASHION. All rights reserved.</p>
                                 </td>
                             </tr>
                         </table>
